@@ -1,18 +1,21 @@
 from utility.graph_generator import RandomGraphFactory
+from itertools import chain, combinations
 
 class GraphTest():
 
     def __init__(self) -> None:
-        self.factory = RandomGraphFactory()
+        pass
 
     # generate some test data with which to check the characteristics the graphs have top obey (i.e simple having no loops and multiple edges...)
     def generate_test_graphs(self, number_graphs: int = 10):
         properties = ['simple', 'directed', 'weighted']
-        graph_list = []
-        for i in range(number_graphs):
-            g = self.factory.generate_graph()
-            graph_list.append(g)
+        graph_types = self.powerset(properties)
+        print(graph_types)
 
+
+    def powerset(self, iterable):
+        s = list(iterable)
+        return chain.from_iterable(combinations(s, r) for r in range(len(s)+ 1))
     
     def test_graph_properties():
         pass
