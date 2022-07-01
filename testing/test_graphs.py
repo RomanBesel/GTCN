@@ -3,7 +3,7 @@ from itertools import chain, combinations
 
 class GraphTest():
 
-    def __init__(self) -> None:
+    def __init__(self):
         pass
 
     # generate some test data with which to check the characteristics the graphs have top obey (i.e simple having no loops and multiple edges...)
@@ -11,7 +11,6 @@ class GraphTest():
         properties = ['simple', 'directed', 'weighted']
         graph_types = self.powerset(properties)
         print(graph_types)
-
 
     def powerset(self, iterable):
         s = list(iterable)
