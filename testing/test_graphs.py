@@ -29,7 +29,7 @@ class GraphTest():
         else: print('Graph test failed.')
 
     def load_test_data(self):
-        test_data = pd.read_csv(r'C:\Users\roman\dev\git dev\GTCN\testing\test_data_graphs.csv', sep=';')
+        test_data = pd.read_csv(r'C:\Users\roman\dev\git dev\GTCN\testing\test_data\test_data_graphs.csv', sep=';')
         return test_data
     
     def test_graph_properties(self, g: BaseGraph, simple: str, directed: str, weighted: str, suppress_output: bool) -> bool:
