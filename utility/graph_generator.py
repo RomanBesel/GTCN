@@ -1,8 +1,10 @@
+from data_transformer import DataTransformer
 import numpy as np
 from base_graph import BaseGraph
 from directed_graphs import DirectedGraph, SimpleDirectedGraph
 from standard_graphs import Graph, SimpleGraph
 from weighted_graphs import WeightedGraph, SimpleWeightedGraph
+from utility import *
 
 
 class RandomGraphFactory(object):
@@ -56,9 +58,10 @@ class RandomGraphFactory(object):
 class GraphFactory(object):
 
     def __init__(self):
-        pass
+        self.data_transformer = DataTransformer()
 
     def generate_graph(self, n: list, e: list, simple: bool = False, directed: bool = False, weighted: bool = False) -> object:
+        n, e = self.data_transformer.transform_input(n, e, weighted)
         return self.graph(n, e, simple, directed, weighted)
 
     def graph(self, nodes, edges, simple: bool, directed: bool, weighted: bool):
