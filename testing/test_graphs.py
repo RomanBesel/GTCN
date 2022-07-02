@@ -45,8 +45,10 @@ class GraphTest():
             passed_weighted = self.test_weighted_property(g)
         else: pass
         passed = passed_base & passed_simple & passed_directed & passed_weighted
-        if (passed == True) & (suppress_output == False):
-            print('Graph' + str(g) + ' has passed property tests successful.')
+        if passed == True:
+            if suppress_output == False:
+                print('Graph' + str(g) + ' has passed property tests successful.')
+            else: pass
         else: print('An error occured at graph object ' + str(g) + '. Please control the code or test data to resolve the error.')
         return passed
 
