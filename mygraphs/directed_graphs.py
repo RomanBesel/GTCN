@@ -22,8 +22,10 @@ class DirectedGraph(Graph):
     def construct_incidence_matrix(self) -> np.array:
         array = np.zeros((len(self.nodes), len(self.edges)))
         for edge, edge_pos in zip(self.edges, range(len(self.edges))):
-            array[edge[0], edge_pos] = -1
-            array[edge[1], edge_pos] = 1 # (a, b) denotes arc a -> b, while (b, a) denotes  arc b -> a
+            if edge[0] != edge[1]:
+                array[edge[0], edge_pos] = -1
+                array[edge[1], edge_pos] = 1 # (a, b) denotes arc a -> b, while (b, a) denotes  arc b -> a
+            else: array[edge[0], edge_pos] = 2
         return array
 
     def construct_degree_matrix(self) -> dict:
