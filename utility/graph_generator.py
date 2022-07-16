@@ -1,8 +1,9 @@
+from data_transformer import DataTransformer
 import numpy as np
 from base_graph import BaseGraph
-from directed_graphs import DirectedGraph, SimpleDirectedGraph
-from standard_graphs import Graph, SimpleGraph
-from weighted_graphs import WeightedGraph, SimpleWeightedGraph
+from simple_graphs import SimpleGraph, SimpleDirectedGraph, SimpleWeightedGraph
+from graphs import Graph, DirectedGraph, WeightedGraph
+from utility import *
 
 
 class RandomGraphFactory(object):
@@ -23,7 +24,7 @@ class RandomGraphFactory(object):
                 return SimpleDirectedGraph(nodes, edges)
             elif (directed == False) & (weighted == True):
                 return SimpleWeightedGraph(nodes, edges)
-            else: raise ValueError('Error in graph co0nstruction. Property case doesnt exist.')
+            else: raise ValueError('Error in graph construction. Property case doesnt exist.')
         elif simple == False:                                   #
             if (directed == False) & (weighted == False):
                 return Graph(nodes, edges)
@@ -31,7 +32,7 @@ class RandomGraphFactory(object):
                 return DirectedGraph(nodes, edges)
             elif (directed == False) & (weighted == True):
                 return WeightedGraph(nodes, edges)
-            else: raise ValueError('Error in graph co0nstruction. Property case doesnt exist.')
+            else: raise ValueError('Error in graph construction. Property case doesnt exist.')
 
     def generate_edge_set(self, n, e, simple, directed, weighted, complete):
 
@@ -49,16 +50,16 @@ class RandomGraphFactory(object):
             if weighted == True:
                 edges = [((np.random.randint(n-1), np.random.randint(n-1)), np.random.randint(100)) for _ in range(number_edges)]
             else: edges = [(np.random.randint(n-1), np.random.randint(n-1)) for _ in range(number_edges)]
-            print(edges)
             return edges
 
 
 class GraphFactory(object):
 
     def __init__(self):
-        pass
+        self.data_transformer = DataTransformer()
 
     def generate_graph(self, n: list, e: list, simple: bool = False, directed: bool = False, weighted: bool = False) -> object:
+        n, e = self.data_transformer.transform_input(n, e, weighted)
         return self.graph(n, e, simple, directed, weighted)
 
     def graph(self, nodes, edges, simple: bool, directed: bool, weighted: bool):

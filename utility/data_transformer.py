@@ -54,6 +54,6 @@ class DataTransformer(object):
         only_int = (all([isinstance(item, int) for item in node_one]) | all([isinstance(item, int) for item in node_two]))
 
         if  only_int == False:
-            edges = [(nodes_to_int[e[0][0]], nodes_to_int[e[0][1]]) for e in edges]
+            edges = [((nodes_to_int[e[0][0]], nodes_to_int[e[0][1]]), e[1]) for e in edges]
         else: pass
         return edges
