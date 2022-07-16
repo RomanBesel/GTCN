@@ -1,7 +1,6 @@
 from msilib.schema import Error
-from weighted_graphs import WeightedGraph
-from directed_graphs import DirectedGraph, DirectedWeightedGraph, SimpleDirectedWeightedGraph
-from standard_graphs import SimpleGraph
+from graphs import WeightedGraph, DirectedGraph, DirectedWeightedGraph
+from simple_graphs import  SimpleGraph, SimpleWeightedGraph, SimpleDirectedGraph,  SimpleDirectedWeightedGraph
 from base_graph import BaseGraph
 from utility.graph_generator import RandomGraphFactory, GraphFactory
 from itertools import chain, combinations
@@ -15,6 +14,7 @@ class GraphTest():
     def __init__(self):
         self.factory = GraphFactory()
         self.test_data = self.load_test_data()
+        self.error_dict = {}
 
     # generate some test data with which to check the characteristics the graphs have top obey (i.e simple having no loops and multiple edges...)
     def test_graphs(self, suppress_output: bool = False):
@@ -49,7 +49,9 @@ class GraphTest():
             if suppress_output == False:
                 print('Graph' + str(g) + ' has passed property tests successful.')
             else: pass
-        else: print('An error occured at graph object ' + str(g) + '. Please control the code or test data to resolve the error.')
+        else: 
+            print('An error occured at graph object ' + str(g) + '. Please control the code or test data to resolve the error.')
+            self.error_dict[(simple, directed, weighted)] = g
         return passed
 
     def test_base_property(self, g: BaseGraph) -> bool:
@@ -80,27 +82,31 @@ class GraphTest():
 
     def test_directed_property(self, g: DirectedGraph) -> bool:
         if isinstance(g, DirectedGraph):
-            test_1 = True
-            if all((v == 0) or (v == 2) for v in set(np.sum(g.incidence_matrix, 0))):
-                test_1 = False
+            test_passed = True
+            if all((v == 0) or (v == 2) for v in set(np.sum(g.incidence_matrix, 0))) != True:
+                test_passed = False
                 print('Failed directed property test.')
-            test_passed = test_1 
             return test_passed
         elif isinstance(g, DirectedWeightedGraph):
-            test_1 = True
+            test_passed = True
             doubled_edge_weights = [2 * e[1] for e in g.edges]
-            if all((v == 0) or (int(v) in doubled_edge_weights) for v in set(np.sum(g.incidence_matrix, 0))):
-                test_1 = False
+            if all((v == 0) or (int(v) in doubled_edge_weights) for v in set(np.sum(g.incidence_matrix, 0))) != True:
+                test_passed = False
                 print('Failed directed property test.')
-            test_passed = test_1 
             return test_passed
-        elif isinstance(g, SimpleDirectedWeightedGraph):
-            test_1 = True
-            if all((v == 0) for v in set(np.sum(g.incidence_matrix, 0))):
-                test_1 = False
+        elif isinstance(g, SimpleDirectedWeightedGraph) or isinstance(g, SimpleDirectedGraph):
+            test_passed = True
+            if all((v == 0) for v in set(np.sum(g.incidence_matrix, 0))) != True:
+                test_passed = False
                 print('Failed directed property test.')
-            test_passed = test_1 
             return test_passed
+        else: 
+            print('Graph is not of one of the available variants.')
+            print(type(g))
+            i = 1
+            self.error_dict['unsupported' + str(i)] = g
+            i += 1
+
 
 
     def test_weighted_property(self, g: WeightedGraph) -> bool:

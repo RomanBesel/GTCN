@@ -1,9 +1,8 @@
 from data_transformer import DataTransformer
 import numpy as np
 from base_graph import BaseGraph
-from directed_graphs import DirectedGraph, SimpleDirectedGraph
-from standard_graphs import Graph, SimpleGraph
-from weighted_graphs import WeightedGraph, SimpleWeightedGraph
+from simple_graphs import SimpleGraph, SimpleDirectedGraph, SimpleWeightedGraph
+from graphs import Graph, DirectedGraph, WeightedGraph
 from utility import *
 
 
@@ -51,7 +50,6 @@ class RandomGraphFactory(object):
             if weighted == True:
                 edges = [((np.random.randint(n-1), np.random.randint(n-1)), np.random.randint(100)) for _ in range(number_edges)]
             else: edges = [(np.random.randint(n-1), np.random.randint(n-1)) for _ in range(number_edges)]
-            print(edges)
             return edges
 
 

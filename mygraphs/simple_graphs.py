@@ -22,7 +22,7 @@ class SimpleGraph(BaseGraph):
         if (len(edges) != len(unique_edges)) or (len(self_loops) != 0): # look if conditions (no self loops and no multiple edges) of simple graph are fulfilled
             raise ValueError('One or both of the conditions for a simple graph are violated in the data passed. Please remove edges until you meet the criterion for a Simple Graph.')
         else: 
-            edg = set(sorted(edg, key=lambda e:(e[0], e[1])))
+            edg = set(sorted(edges, key=lambda e:(e[0], e[1])))
             self._edges = edg
 
     def construct_adjacency_matrix(self) -> np.array:
