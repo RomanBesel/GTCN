@@ -82,7 +82,6 @@ class SimpleWeightedGraph(SimpleGraph):
         return array
 
     # The incidence matrix must be built differently compared to the other graphs:
-    # for multiple edges (a, b) -> each gets their own column
     # instead of 1 the weights of the edges are set in the matrix
 
     def construct_incidence_matrix(self):
@@ -95,8 +94,8 @@ class SimpleWeightedGraph(SimpleGraph):
     def construct_degree_matrix(self):
         adj_array, array = np.zeros((len(self.nodes), len(self.nodes))), np.zeros((len(self.nodes), len(self.nodes)))
         for edge in self.edges:
-            adj_array[edge[0]] = 1 # instead of 1 here the weight is set as value
-            adj_array[tuple(reversed(edge[0]))] = 1 # same as above
+            adj_array[edge[0]] = 1 
+            adj_array[tuple(reversed(edge[0]))] = 1 
         sums_row = np.sum(adj_array, 1)
         for i in range(len(self.nodes)):
             array[(i, i)] = sums_row[i]
@@ -105,8 +104,8 @@ class SimpleWeightedGraph(SimpleGraph):
     def construct_laplacian_matrix(self):
         adj_array, array = np.zeros((len(self.nodes), len(self.nodes))), np.zeros((len(self.nodes), len(self.nodes)))
         for edge in self.edges:
-            adj_array[edge[0]] = 1 # instead of 1 here the weight is set as value
-            adj_array[tuple(reversed(edge[0]))] = 1 # same as above
+            adj_array[edge[0]] = 1 
+            adj_array[tuple(reversed(edge[0]))] = 1 
         array = np.subtract(adj_array, self.degree_matrix)
         return array
         
