@@ -89,7 +89,7 @@ class GraphTest():
         elif isinstance(g, DirectedWeightedGraph):
             test_1 = True
             doubled_edge_weights = [2 * e[1] for e in g.edges]
-            if all((v == 0) or (v in doubled_edge_weights) for v in set(np.sum(g.incidence_matrix, 0))):
+            if all((v == 0) or (int(v) in doubled_edge_weights) for v in set(np.sum(g.incidence_matrix, 0))):
                 test_1 = False
                 print('Failed directed property test.')
             test_passed = test_1 
