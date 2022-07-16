@@ -137,15 +137,8 @@ class DirectedWeightedGraph(Graph):
 
     @edges.setter
     def edges(self, edges: list):
-        edges_loops_removed = [e for e  in edges if e[0][0] != e[0][1]]
-        edges_tuple = [e[0] for e in edges_loops_removed] 
-        unique_edges = set(edges_tuple) # get unique edges in edge list
-        multiple_edges = [e for e in edges_tuple if edges_tuple.count(e) >= 2]
-        if multiple_edges != []:
-            raise ValueError('There exist multiple edges incident to the same nodes in the data you provided. Please remove edges until you meet the criterion for a Simple Graph.')
-        else: 
-            edg = sorted(edges_loops_removed, key=lambda e: e[0])
-            self._edges = edg
+        edg = sorted(edges, key=lambda e: e[0])
+        self._edges = edg
         
     def construct_adjacency_matrix(self) -> np.array:
         array = np.zeros((len(self.nodes), len(self.nodes)))
@@ -171,6 +164,7 @@ class DirectedWeightedGraph(Graph):
         sums_col = np.sum(self.adjacency_matrix, 0)
         for i in range(len(self.nodes)):
             array[(i, i)] = sums_col[i]
+            
         return array
 
     def get_out_degree_matrix(self) -> np.array:
