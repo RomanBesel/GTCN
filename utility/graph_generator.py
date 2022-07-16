@@ -24,7 +24,7 @@ class RandomGraphFactory(object):
                 return SimpleDirectedGraph(nodes, edges)
             elif (directed == False) & (weighted == True):
                 return SimpleWeightedGraph(nodes, edges)
-            else: raise ValueError('Error in graph co0nstruction. Property case doesnt exist.')
+            else: raise ValueError('Error in graph construction. Property case doesnt exist.')
         elif simple == False:                                   #
             if (directed == False) & (weighted == False):
                 return Graph(nodes, edges)
@@ -32,7 +32,7 @@ class RandomGraphFactory(object):
                 return DirectedGraph(nodes, edges)
             elif (directed == False) & (weighted == True):
                 return WeightedGraph(nodes, edges)
-            else: raise ValueError('Error in graph co0nstruction. Property case doesnt exist.')
+            else: raise ValueError('Error in graph construction. Property case doesnt exist.')
 
     def generate_edge_set(self, n, e, simple, directed, weighted, complete):
 
