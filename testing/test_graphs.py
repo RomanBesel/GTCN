@@ -1,6 +1,6 @@
 from msilib.schema import Error
 from weighted_graphs import WeightedGraph
-from directed_graphs import DirectedGraph
+from directed_graphs import DirectedGraph, DirectedWeightedGraph, SimpleDirectedWeightedGraph
 from standard_graphs import SimpleGraph
 from base_graph import BaseGraph
 from utility.graph_generator import RandomGraphFactory, GraphFactory
@@ -79,12 +79,21 @@ class GraphTest():
         return test_passed
 
     def test_directed_property(self, g: DirectedGraph) -> bool:
-        test_1 = True
-        if all((v is 0) or (v is 2) for v in set(np.sum(g.incidence_matrix, 0))):
-            test_1 = False
-            print('Failed directed property test.')
-        test_passed = test_1 
-        return test_passed
+        if isinstance(g, DirectedGraph):
+            test_1 = True
+            if all((v == 0) or (v == 2) for v in set(np.sum(g.incidence_matrix, 0))):
+                test_1 = False
+                print('Failed directed property test.')
+            test_passed = test_1 
+            return test_passed
+        elif isinstance(g, DirectedWeightedGraph) or isinstance(g, SimpleDirectedWeightedGraph):
+            test_1 = True
+            if all((v == 0) or (v == 2) for v in set(np.sum(g.incidence_matrix, 0))):
+                test_1 = False
+                print('Failed directed property test.')
+            test_passed = test_1 
+            return test_passed
+
 
     def test_weighted_property(self, g: WeightedGraph) -> bool:
         test_1 = True
