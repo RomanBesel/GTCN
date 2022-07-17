@@ -14,7 +14,8 @@ class GraphTest():
     def __init__(self):
         self.factory = GraphFactory()
         self.test_data = self.load_test_data()
-        self.error_dict = {}
+        self.error_objects = {}
+        self.error_properties = {}
 
     # generate some test data with which to check the characteristics the graphs have top obey (i.e simple having no loops and multiple edges...)
     def test_graphs(self, suppress_output: bool = False):
@@ -47,11 +48,12 @@ class GraphTest():
         passed = passed_base & passed_simple & passed_directed & passed_weighted
         if passed == True:
             if suppress_output == False:
-                print('Graph' + str(g) + ' has passed property tests successful.')
+                print('Graph' + str(type(g)) + ' has passed property tests successful.')
             else: pass
         else: 
             print('An error occured at graph object ' + str(g) + '. Please control the code or test data to resolve the error.')
-            self.error_dict[(simple, directed, weighted)] = g
+            self.error_objects[(simple, directed, weighted)] = g
+            self.error_properties[g] = tuple([ ('base_property', passed_base), ('simple_property', passed_simple), ('directed_property', passed_directed), ('weighted_property', passed_weighted)])
         return passed
 
     def test_base_property(self, g: BaseGraph) -> bool:
@@ -72,7 +74,6 @@ class GraphTest():
             if g.adjacency_matrix[i, i] != 0:
                 test_1 = False
                 print('Failed loop existence test.')
-        test_passed = test_1 
         test_2 = True
         if np.unique(g.incidence_matrix, axis=1).shape[1] != len(g.edges):
             test_2 = False
@@ -80,7 +81,7 @@ class GraphTest():
         test_passed = test_1 & test_2
         return test_passed
 
-    def test_directed_property(self, g: DirectedGraph) -> bool:
+    def test_directed_property(self, g: BaseGraph) -> bool:
         if isinstance(g, DirectedGraph):
             test_passed = True
             if all((v == 0) or (v == 2) for v in set(np.sum(g.incidence_matrix, 0))) != True:
@@ -104,19 +105,31 @@ class GraphTest():
             print('Graph is not of one of the available variants.')
             print(type(g))
             i = 1
-            self.error_dict['unsupported' + str(i)] = g
+            self.error_objects['unsupported' + str(i)] = g
             i += 1
 
-
-
-    def test_weighted_property(self, g: WeightedGraph) -> bool:
-        test_1 = True
-        weights = [2 * e[1] for e in g.edges]
-        if np.array_equal(np.sum(g.incidence_matrix, 0), weights) != True:
-            test_1 = False
-            print('Failed consistent weight test.')
-        test_passed = test_1
-        return test_passed
+    def test_weighted_property(self, g: BaseGraph) -> bool:
+        if isinstance(g, WeightedGraph) or isinstance(g, SimpleWeightedGraph):
+            test_passed = True
+            weights = [2 * e[1] for e in g.edges]
+            if np.array_equal(np.sum(g.incidence_matrix, 0), weights) != True:
+                test_passed = False
+                print('Failed consistent weight test.')
+            return test_passed
+        elif isinstance(g, DirectedWeightedGraph):
+            test_passed = True
+            weights = [0 if e[0][0] != e[0][1] else 2 * e[1] for e in g.edges]
+            if np.array_equal(np.sum(g.incidence_matrix, 0), weights) != True:
+                test_passed = False
+                print('Failed consistent weight test.')
+            return test_passed
+        elif isinstance(g, SimpleDirectedWeightedGraph):
+            test_passed = True
+            weights = [0 for e in g.edges]
+            if np.array_equal(np.sum(g.incidence_matrix, 0), weights) != True:
+                test_passed = False
+                print('Failed consistent weight test.')
+            return test_passed
 
 
             
