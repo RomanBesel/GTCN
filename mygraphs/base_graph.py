@@ -39,19 +39,23 @@ class BaseGraph():
         self.degree_matrix = self.construct_degree_matrix()
 
     def add_node(self, node):
-        self.nodes = sorted(self.nodes.add(node))
+        self.nodes.add(node)
+        self.nodes = set(sorted(self.nodes))
         self.update_matrizes()
         
     def delete_node(self, node):
-        self.nodes = sorted(self.nodes.remove(node))
+        self.nodes.remove(node)
+        self.nodes = set(sorted(self.nodes))
         self.update_matrizes()
 
     def add_edge(self, edge):
-        self.edges = self.edges.extend(edge)
+        self.edges.append(edge)
+        self.edges = self.edges
         self.update_matrizes()
         
     def delete_edge(self, edge):
-        self.edges = self.edges.remove(edge)
+        self.edges.remove(edge)
+        self.edges = self.edges
         self.update_matrizes()
 
 
