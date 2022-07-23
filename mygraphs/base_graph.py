@@ -33,5 +33,27 @@ class BaseGraph():
             array[(i, i)] = sums_row[i]
         return array
 
+    def update_matrizes(self):
+        self.adjacency_matrix = self.construct_adjacency_matrix()
+        self.incidence_matrix = self.construct_incidence_matrix()
+        self.degree_matrix = self.construct_degree_matrix()
+
+    def add_node(self, node):
+        self.nodes = sorted(self.nodes.add(node))
+        self.update_matrizes()
+        
+    def delete_node(self, node):
+        self.nodes = sorted(self.nodes.remove(node))
+        self.update_matrizes()
+
+    def add_edge(self, edge):
+        self.edges = self.edges.extend(edge)
+        self.update_matrizes()
+        
+    def delete_edge(self, edge):
+        self.edges = self.edges.remove(edge)
+        self.update_matrizes()
+
+
     
 
